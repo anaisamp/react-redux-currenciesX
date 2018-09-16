@@ -1,0 +1,18 @@
+{
+    "presets": [
+        ["env", {
+            "targets": {
+                "browsers": ["last 2 versions", "ie >= 11"]
+            }
+        }],
+        "react",
+        "stage-2"
+    ],
+    "plugins": [
+        "ramda",
+        "transform-regenerator",
+        "transform-object-rest-spread",
+        "babel-plugin-styled-components",
+        "add-module-exports"
+    ]
+}
