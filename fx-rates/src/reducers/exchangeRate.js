@@ -1,11 +1,11 @@
-const initialState = {
-  rates: null,
-}
-export default (state = initialState, action) => {
-  switch (action.type) {
+
+export default (state = {}, action) => {
+  const { type, base, payload } = action;
+  switch (type) {
     case 'UPDATE_RATES':
       return {
-        rates: action.payload
+        ...state,
+        [base]: payload,
       }
     default:
       return state

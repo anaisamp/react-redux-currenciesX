@@ -17,14 +17,15 @@ class App extends Component {
     this.state = {
       from: 'EUR',
       to: 'GBP',
-      valueTo: '',
-      valueFrom: '',
+      toValue: '',
+      fromValue: '',
     }
   }
 
   componentDidMount() {
-    this.props.getExchangeRate();
-    //this.interval = setInterval(() => this.props.getExchangeRate(), 10000);
+    this.props.getExchangeRate(this.state.from);
+    this.props.getExchangeRate(this.state.to);
+    //this.interval = setInterval(() => this.props.getExchangeRate(), 10000); // service worker??
   }
 
   componentWillUnmount() {
@@ -38,13 +39,62 @@ class App extends Component {
   handleExchangeRate = (e) => {
     // send selected rates as props, then filter !currency
     const value = e.target.value;
-    const exhangeValue = parseFloat(value) * this.props.rates[this.state.to];
+    const currencyBase = e.target.name;
+    const currencyTo = currencyBase === this.state.from ? this.state.to : this.state.from;
+    const inputTo = currencyBase === this.state.from ? 'toValue' : 'fromValue';
+    const inputFrom = currencyBase === this.state.from ? 'fromValue' : 'toValue';
+
+    const exhangeValue = parseFloat(value) * this.props[currencyBase][currencyTo];
 
     this.setState({
-      valueFrom: parseFloat(value),
-      valueTo: exhangeValue.toFixed(2)
+      [inputFrom]: parseFloat(value),
+      [inputTo]: exhangeValue.toFixed(2)
     });
 
+  }
+
+  handleCurrencyFromChange = (e) => {
+    const toV = this.state.to;
+    const oldFrom = this.state.from;
+    const updatedFrom = e.target.value;
+
+    if (toV === updatedFrom) {
+      this.setState({
+        to: oldFrom,
+        from: updatedFrom,
+        fromValue: '',
+        toValue: '',
+      });
+    }
+    else {
+      this.setState({
+        [e.target.name]: e.target.value,
+        fromValue: '',
+        toValue: '',
+      });
+    }
+    this.props.getExchangeRate(updatedFrom);
+  }
+
+  handleCurrencyToChange = (e) => {
+    const toV = this.state.to;
+    const fromV = this.state.from;
+    const updatedTo = e.target.value;
+    if (fromV === updatedTo ) {
+      this.setState({
+        from: toV,
+        to: updatedTo,
+        fromValue: '',
+        toValue: '',
+      })
+    }
+    else {
+      this.setState({
+        [e.target.name]: e.target.value,
+        fromValue: '',
+        toValue: '',
+      });
+    }
   }
 
   render() {
@@ -57,28 +107,28 @@ class App extends Component {
           {currencies.find(c => c.symbol === this.state.from).currency} 
           1 
           = {currencies.find(c => c.symbol === this.state.to).currency} 
-          {this.props.rates && this.props.rates[this.state.to].toFixed(4)}
+          {this.props[this.state.from] && this.props[this.state.from][this.state.to].toFixed(4) }
         </p>
         
         <div>
-          <select name={`select${this.state.to}`} value={this.state.from} onChange={this.handleChangeFormCurrency}>
+          <select name='from' value={this.state.from} onChange={this.handleCurrencyFromChange}>
             { currencies.map(currency => 
               <option value={currency.symbol} key={currency.symbol}>
                 { currency.symbol }
               </option>)
             }
           </select>
-          <input type="number" step="0.01" value={this.state.valueFrom} name={this.state.from} onChange={this.handleExchangeRate} />
+          <input type="number" step="0.01" value={this.state.fromValue} name={this.state.from} onChange={this.handleExchangeRate} />
         </div>
         <div>
-          <select value={this.state.to} onChange={this.handleChangeToCurrency}>
+          <select name='to' value={this.state.to} onChange={this.handleCurrencyToChange}>
             {currencies.map(currency =>
               <option value={currency.symbol} key={currency.symbol}>
                 {currency.symbol}
               </option>)
             }
           </select>
-          <input type="number" step="0.01" value={this.state.valueTo} name={this.state.to} onChange={this.handleExchangeRate} /> 
+          <input type="number" step="0.01" value={this.state.toValue} name={this.state.to} onChange={this.handleExchangeRate} /> 
         </div>
       </div>
     );
@@ -90,7 +140,7 @@ const mapStateToProps = ({exchangeRate}) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getExchangeRate: () => dispatch(getExchangeRate())
+  getExchangeRate: (base) => dispatch(getExchangeRate(base))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
