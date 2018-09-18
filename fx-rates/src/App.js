@@ -3,29 +3,27 @@ import { connect } from 'react-redux';
 import './App.css';
 
 import { getExchangeRate } from './actions/getExchangeRate';
-
-
-const currencies = [
-  { symbol: 'GBP', currency: '£' },
-  { symbol: 'EUR', currency: '€' },
-  { symbol: 'USD', currency: '$' }
-];
+import ExchangeRate from './components/exchangeRate';
+import ConvertForm from './components/convertForm';
 
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      from: 'EUR',
-      to: 'GBP',
+      from: 'GBP',
+      to: 'EUR',
       toValue: '',
       fromValue: '',
     }
   }
 
-  componentDidMount() {
+  initExchangeRates = () => {
     this.props.getExchangeRate(this.state.from);
     this.props.getExchangeRate(this.state.to);
-    //this.interval = setInterval(() => this.props.getExchangeRate(), 10000); // service worker??
+  }
+  componentDidMount() {
+    this.initExchangeRates();
+    //this.interval = setInterval(() => this.props.getExchangeRate(this.state.from), 10000);
   }
 
   componentWillUnmount() {
@@ -33,35 +31,30 @@ class App extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-   return this.props !== nextProps || this.state !== nextState;
+    return this.props !== nextProps || this.state !== nextState;
   }
 
-  handleExchangeRate = (e) => {
-    // send selected rates as props, then filter !currency
+  handleExchangeRate = (e, inputFrom, inputTo) => {
     const value = e.target.value;
     const currencyBase = e.target.name;
     const currencyTo = currencyBase === this.state.from ? this.state.to : this.state.from;
-    const inputTo = currencyBase === this.state.from ? 'toValue' : 'fromValue';
-    const inputFrom = currencyBase === this.state.from ? 'fromValue' : 'toValue';
-
     const exhangeValue = parseFloat(value) * this.props[currencyBase][currencyTo];
-
     this.setState({
       [inputFrom]: parseFloat(value),
       [inputTo]: exhangeValue.toFixed(2)
     });
-
   }
 
-  handleCurrencyFromChange = (e) => {
-    const toV = this.state.to;
-    const oldFrom = this.state.from;
-    const updatedFrom = e.target.value;
+  handleCurrencyChange = (e, selectElement) => {
+    const oldCurrencyFrom = this.state.from;
+    const oldCurrencyTo = this.state.to;
+    const updatedCurrency = e.target.value;
+    const oppsitySelectElement = selectElement === 'from' ? oldCurrencyTo : oldCurrencyFrom;
 
-    if (toV === updatedFrom) {
+    if (oppsitySelectElement === updatedCurrency) {
       this.setState({
-        to: oldFrom,
-        from: updatedFrom,
+        from: selectElement === 'from' ? updatedCurrency : oldCurrencyTo,
+        to: selectElement === 'from' ? oldCurrencyFrom : updatedCurrency,
         fromValue: '',
         toValue: '',
       });
@@ -73,62 +66,37 @@ class App extends Component {
         toValue: '',
       });
     }
-    this.props.getExchangeRate(updatedFrom);
-  }
-
-  handleCurrencyToChange = (e) => {
-    const toV = this.state.to;
-    const fromV = this.state.from;
-    const updatedTo = e.target.value;
-    if (fromV === updatedTo ) {
-      this.setState({
-        from: toV,
-        to: updatedTo,
-        fromValue: '',
-        toValue: '',
-      })
+    if (!this.props[updatedCurrency]){ 
+      this.props.getExchangeRate(updatedCurrency);
     }
-    else {
-      this.setState({
-        [e.target.name]: e.target.value,
-        fromValue: '',
-        toValue: '',
-      });
-    }
-  }
+  };
 
   render() {
+    const { from, fromValue, to, toValue } = this.state;
     return (
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">Exchange</h1>
         </header>
-        <p className="App-intro">
-          {currencies.find(c => c.symbol === this.state.from).currency} 
-          1 
-          = {currencies.find(c => c.symbol === this.state.to).currency} 
-          {this.props[this.state.from] && this.props[this.state.from][this.state.to].toFixed(4) }
+        <p className="App-rates">
+          <ExchangeRate from={from} to={to} exchangeRates={this.props} />
         </p>
         
-        <div>
-          <select name='from' value={this.state.from} onChange={this.handleCurrencyFromChange}>
-            { currencies.map(currency => 
-              <option value={currency.symbol} key={currency.symbol}>
-                { currency.symbol }
-              </option>)
-            }
-          </select>
-          <input type="number" step="0.01" value={this.state.fromValue} name={this.state.from} onChange={this.handleExchangeRate} />
-        </div>
-        <div>
-          <select name='to' value={this.state.to} onChange={this.handleCurrencyToChange}>
-            {currencies.map(currency =>
-              <option value={currency.symbol} key={currency.symbol}>
-                {currency.symbol}
-              </option>)
-            }
-          </select>
-          <input type="number" step="0.01" value={this.state.toValue} name={this.state.to} onChange={this.handleExchangeRate} /> 
+        <div className="App-convert">
+          <ConvertForm
+            selectName='from'
+            selectedCurrency={from}
+            inputValue={fromValue}
+            handleCurrencyChange={(e) => this.handleCurrencyChange(e, 'from')}
+            handleExchangeRate={(e) => this.handleExchangeRate(e, 'fromValue', 'toValue')}
+            />
+          <ConvertForm
+            selectName='to'
+            selectedCurrency={to}
+            inputValue={toValue}
+            handleCurrencyChange={(e) => this.handleCurrencyChange(e, 'to')}
+            handleExchangeRate={(e) => this.handleExchangeRate(e, 'toValue', 'fromValue')}
+          />
         </div>
       </div>
     );
