@@ -41,7 +41,7 @@ class App extends Component {
     const exhangeValue = parseFloat(value) * this.props[currencyBase][currencyTo];
     this.setState({
       [inputFrom]: parseFloat(value),
-      [inputTo]: exhangeValue.toFixed(2)
+      [inputTo]: exhangeValue === 0 ? exhangeValue : exhangeValue.toFixed(2)
     });
   }
 

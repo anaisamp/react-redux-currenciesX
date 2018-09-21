@@ -1,3 +1,0 @@
-#FX Rates
-
-TBD
