@@ -1,4 +1,4 @@
-#Exchange Currencies
+# Exchange Currencies
 
 Exchange Currencies between GBP, EUR and USD.
 
