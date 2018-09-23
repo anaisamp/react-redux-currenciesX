@@ -2,7 +2,7 @@
 
 This is a react with redux application to exchange currencies between GBP, EUR and USD.
 
-FX rates are provides by [Exchange Rates API](https://exchangeratesapi.io/).
+FX rates are provided by [Exchange Rates API](https://exchangeratesapi.io/).
 
 This app was created using [`create-react-app`](https://github.com/facebook/create-react-app).
 
@@ -20,7 +20,7 @@ A screenshot of the application is available at "visuals" folder.
 
 `yarn`
 
-3. Development server
+3. Start development server
 
 `npm run start`
 
@@ -30,13 +30,13 @@ A screenshot of the application is available at "visuals" folder.
 
 ## Features
 
-- Get updated rates each 10 minutes.
-- Exchange amount between supported currencies, while updating user's current balance.
+- Get updated rates every 10 minutes.
+- Exchange amount between supported currencies, while updating the user's current balance.
 - Accessibility was taken into account.
 
 ## Next steps
 
 - Improve test coverage.
 - Highlight balance when it updates.
-- Highlight balance when user doesn't have sufficient funds.
+- Highlight balance when the user doesn't have sufficient funds.
 - Use redux to manage the whole application state.
