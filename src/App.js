@@ -9,7 +9,7 @@ import { updateBalance } from './actions/updateBalance';
 import ExchangeRate from './components/exchangeRate';
 import ConvertForm from './components/convertForm';
 
-class App extends Component {
+export class App extends Component {
   constructor(props) {
     super(props);
     this.state = {

@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders ConvertForm 1`] = `
+<div
+  className="convert-form"
+>
+  <div
+    className="convert-wrapper"
+  >
+    <span
+      className="select-wrapper"
+    >
+      <select
+        name="from"
+        onChange={[Function]}
+        value="USD"
+      >
+        <option
+          key="GBP"
+          value="GBP"
+        >
+          GBP
+        </option>
+        <option
+          key="EUR"
+          value="EUR"
+        >
+          EUR
+        </option>
+        <option
+          key="USD"
+          value="USD"
+        >
+          USD
+        </option>
+      </select>
+    </span>
+    <input
+      min="0"
+      name="USD"
+      onChange={[Function]}
+      placeholder="0"
+      step="0.01"
+      type="number"
+      value="11"
+    />
+  </div>
+  <p
+    className="balance"
+  >
+    Balance:
+     
+    $
+    30.00
+  </p>
+</div>
+`;

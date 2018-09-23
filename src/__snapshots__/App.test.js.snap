@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders App 1`] = `
+<div
+  className="App"
+>
+  <header>
+    <h1
+      className="App-title"
+    >
+      Exchange
+    </h1>
+  </header>
+  <div
+    className="App-convert"
+  >
+    <ConvertForm
+      balance="400.30"
+      handleCurrencyChange={[Function]}
+      handleExchangeRate={[Function]}
+      inputValue=""
+      selectName="from"
+      selectedCurrency="GBP"
+    />
+    <span
+      className="App-rates"
+    >
+      <ExchangeRate
+        from="GBP"
+        rates={
+          Object {
+            "balance": Object {
+              "EUR": "150.00",
+              "GBP": "400.30",
+              "USD": "21.02",
+            },
+            "getExchangeRate": [Function],
+            "updateBalance": [Function],
+          }
+        }
+        to="EUR"
+      />
+    </span>
+    <ConvertForm
+      balance="150.00"
+      handleCurrencyChange={[Function]}
+      handleExchangeRate={[Function]}
+      inputValue=""
+      selectName="to"
+      selectedCurrency="EUR"
+    />
+    <button
+      className="App-button"
+      disabled={true}
+      onClick={[Function]}
+      type="button"
+    >
+      Exchange
+    </button>
+  </div>
+</div>
+`;
