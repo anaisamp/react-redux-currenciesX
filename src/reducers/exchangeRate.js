@@ -7,8 +7,8 @@ export default (state = {}, action) => {
       return {
         ...state,
         [base]: payload,
-      }
+      };
     default:
-      return state
+      return state;
   }
-}
+};

@@ -1,1 +1,2 @@
-export const baseAPIUrl = 'https://api.exchangeratesapi.io/latest?';
+const baseAPIUrl = 'https://api.exchangeratesapi.io/latest?';
+export default baseAPIUrl;

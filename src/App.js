@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import './App.css';
 
@@ -9,27 +10,27 @@ import ExchangeRate from './components/exchangeRate';
 import ConvertForm from './components/convertForm';
 
 class App extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       from: 'GBP',
       to: 'EUR',
       toValue: '',
       fromValue: '',
-    }
+    };
   }
 
   componentDidMount() {
     this.initExchangeRates();
-    //this.interval = this.updateExchangeRates(this.state.from, 10000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
+    // this.interval = this.updateExchangeRates(this.state.from, 10000);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     return this.props !== nextProps || this.state !== nextState;
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   initExchangeRates = () => {
@@ -83,15 +84,17 @@ class App extends Component {
     this.updateIfNotExists(nextCurrency);
   };
 
-  handleExchangeButton = (e) => {
-    const fromValue = this.state.fromValue;
-    const fromCurrency = this.state.from;
-    const toValue = this.state.toValue;
-    const toCurrency = this.state.to;
+  handleExchangeButton = () => {
+    const {
+      from, fromValue, to, toValue,
+    } = this.state;
 
-    if (this.props.balance[fromCurrency] >= fromValue) {
-      this.props.updateBalance(fromValue, fromCurrency, toValue, toCurrency);
-      
+    if (this.props.balance[from] >= fromValue) {
+      const balance = {
+        fromValue, from, toValue, to,
+      };
+      this.props.updateBalance(balance);
+
       this.setState({
         fromValue: '',
         toValue: '',
@@ -99,12 +102,12 @@ class App extends Component {
     }
   };
 
-  isDisabled = () => {
-    return !this.state.fromValue || this.props.balance[this.state.from] < this.state.fromValue
-  }
+  isDisabled = () => !this.state.fromValue || this.props.balance[this.state.from] < this.state.fromValue;
 
   render() {
-    const { from, fromValue, to, toValue } = this.state;
+    const {
+      from, fromValue, to, toValue,
+    } = this.state;
 
     return (
       <div className="App">
@@ -114,46 +117,52 @@ class App extends Component {
 
         <div className="App-convert">
           <ConvertForm
-            selectName='from'
+            selectName="from"
             selectedCurrency={from}
             inputValue={fromValue}
-            handleCurrencyChange={(e) => this.handleCurrencyChange(e, 'from')}
-            handleExchangeRate={(e) => this.handleExchangeRate(e, 'fromValue', 'toValue')}
+            handleCurrencyChange={e => this.handleCurrencyChange(e, 'from')}
+            handleExchangeRate={e => this.handleExchangeRate(e, 'fromValue', 'toValue')}
             balance={this.props.balance[from]}
-            />
+          />
           <span className="App-rates">
             <ExchangeRate from={from} to={to} rates={this.props} />
           </span>
           <ConvertForm
-            selectName='to'
+            selectName="to"
             selectedCurrency={to}
             inputValue={toValue}
-            handleCurrencyChange={(e) => this.handleCurrencyChange(e, 'to')}
-            handleExchangeRate={(e) => this.handleExchangeRate(e, 'toValue', 'fromValue')}
+            handleCurrencyChange={e => this.handleCurrencyChange(e, 'to')}
+            handleExchangeRate={e => this.handleExchangeRate(e, 'toValue', 'fromValue')}
             balance={this.props.balance[to]}
           />
           <button
-            className='App-button'
-            type='button'
+            className="App-button"
+            type="button"
             onClick={this.handleExchangeButton}
             disabled={this.isDisabled()}
-            >
+          >
               Exchange
-            </button>
+          </button>
         </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ exchangeRate, updateBalance}) => ({
+const mapStateToProps = ({ exchangeRate, balanceUpdate }) => ({
   ...exchangeRate,
-  balance: { ...updateBalance },
+  balance: { ...balanceUpdate },
 });
 
 const mapDispatchToProps = dispatch => ({
-  getExchangeRate: (base) => dispatch(getExchangeRate(base)),
-  updateBalance: (fromValue, fromCurrency, toValue, toCurrency) => dispatch(updateBalance(fromValue, fromCurrency, toValue, toCurrency)),
+  getExchangeRate: base => dispatch(getExchangeRate(base)),
+  updateBalance: data => dispatch(updateBalance(data)),
 });
+
+App.propTypes = {
+  getExchangeRate: PropTypes.func.isRequired,
+  updateBalance: PropTypes.func.isRequired,
+  balance: PropTypes.object.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

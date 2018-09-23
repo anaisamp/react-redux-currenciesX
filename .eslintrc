@@ -12,5 +12,13 @@
       "jsx": true
     }
   },
-  "plugins": ["jest"]
+  "plugins": ["jest"],
+  "rules": {
+    "react/destructuring-assignment": "off",
+    "react/jsx-filename-extension": "off",
+    "no-case-declarations": "off",
+    "react/forbid-prop-types": "off",
+    "import/prefer-default-export": "warn",
+    "max-len": "warn"
+  }
 }

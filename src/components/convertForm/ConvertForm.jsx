@@ -1,16 +1,20 @@
 import React from 'react';
-import { currencies } from '../../constants';
+import PropTypes from 'prop-types';
+import currencies from '../../constants/currencies';
 import './convertForm.css';
 
-const ConvertForm = ({ selectName, selectedCurrency, inputValue, handleCurrencyChange, handleExchangeRate, balance }) => (
-  <div className='convert-form'>
-    <div className='convert-wrapper'>
-      <span className='select-wrapper'>
+const ConvertForm = ({
+  selectName, selectedCurrency, inputValue, handleCurrencyChange, handleExchangeRate, balance,
+}) => (
+  <div className="convert-form">
+    <div className="convert-wrapper">
+      <span className="select-wrapper">
         <select name={selectName} value={selectedCurrency} onChange={handleCurrencyChange}>
-          { currencies.map(currency =>
+          { currencies.map(currency => (
             <option value={currency.symbol} key={currency.symbol}>
               {currency.symbol}
-            </option>)
+            </option>
+          ))
           }
         </select>
       </span>
@@ -24,10 +28,22 @@ const ConvertForm = ({ selectName, selectedCurrency, inputValue, handleCurrencyC
         min="0"
       />
     </div>
-    <p className='balance'>Balance: {currencies.filter(c => c.symbol === selectedCurrency)[0].currency}
+    <p className="balance">
+      Balance:
+      {' '}
+      {currencies.filter(c => c.symbol === selectedCurrency)[0].currency}
       {parseFloat(balance).toFixed(2)}
     </p>
   </div>
 );
+
+ConvertForm.propTypes = {
+  selectName: PropTypes.string.isRequired,
+  selectedCurrency: PropTypes.string.isRequired,
+  inputValue: PropTypes.string.isRequired,
+  handleCurrencyChange: PropTypes.func.isRequired,
+  handleExchangeRate: PropTypes.func.isRequired,
+  balance: PropTypes.number.isRequired,
+};
 
 export default ConvertForm;

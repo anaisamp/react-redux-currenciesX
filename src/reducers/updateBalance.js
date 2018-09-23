@@ -10,16 +10,19 @@ export default (state = initialState, action) => {
   const { type } = action;
   switch (type) {
     case UPDATE_BALANCE:
-      const { fromCurrency, toCurrency, toValue, fromValue } = action.payload;
-      const fromBalance = parseFloat(state[fromCurrency]) - parseFloat(fromValue);
-      const toBalance = parseFloat(state[toCurrency]) + parseFloat(toValue)
+      const {
+        from, to, toValue, fromValue,
+      } = action.payload;
+      const fromBalance = parseFloat(state[from]) - parseFloat(fromValue);
+      const toBalance = parseFloat(state[to]) + parseFloat(toValue);
+
       return {
         ...state,
-        [fromCurrency]: fromBalance.toFixed(2),
-        [toCurrency]: toBalance.toFixed(2),
+        [from]: fromBalance.toFixed(2),
+        [to]: toBalance.toFixed(2),
 
-      }
+      };
     default:
-      return state
+      return state;
   }
-}
+};

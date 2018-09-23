@@ -1,8 +1,6 @@
-import { UPDATE_BALANCE } from '../constants';
+import { UPDATE_BALANCE } from '../constants/types';
 
-export const updateBalance = (fromValue, fromCurrency, toValue, toCurrency) => {
-  return {
-    type: UPDATE_BALANCE,
-    payload: { fromValue, fromCurrency, toValue, toCurrency }
-  }
-};
+export const updateBalance = payload => ({
+  type: UPDATE_BALANCE,
+  payload,
+});
