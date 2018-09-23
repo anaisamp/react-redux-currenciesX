@@ -1,9 +1,9 @@
 import { UPDATE_BALANCE } from '../constants/types';
 
 const initialState = {
-  GBP: 20.00,
-  EUR: 0.00,
-  USD: 0.00,
+  GBP: '20.00',
+  EUR: '0.00',
+  USD: '0.00',
 };
 
 export default (state = initialState, action) => {
@@ -18,8 +18,8 @@ export default (state = initialState, action) => {
 
       return {
         ...state,
-        [from]: fromBalance.toFixed(2),
-        [to]: toBalance.toFixed(2),
+        [from]: fromBalance.toFixed(2).toString(),
+        [to]: toBalance.toFixed(2).toString(),
 
       };
     default:

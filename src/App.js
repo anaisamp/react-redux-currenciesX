@@ -85,11 +85,11 @@ class App extends Component {
   };
 
   handleExchangeButton = () => {
-    const {
-      from, fromValue, to, toValue,
-    } = this.state;
-
-    if (this.props.balance[from] >= fromValue) {
+    const insufficientFunds = this.isDisabled();
+    if (!insufficientFunds) {
+      const {
+        fromValue, from, toValue, to,
+      } = this.state;
       const balance = {
         fromValue, from, toValue, to,
       };
@@ -102,7 +102,12 @@ class App extends Component {
     }
   };
 
-  isDisabled = () => !this.state.fromValue || this.props.balance[this.state.from] < this.state.fromValue;
+  isDisabled = () => {
+    const { fromValue, from } = this.state;
+    const fromValueFloat = parseFloat(fromValue);
+    const fromBalanceFloat = parseFloat(this.props.balance[from]);
+    return !fromValueFloat || fromValueFloat > fromBalanceFloat;
+  }
 
   render() {
     const {

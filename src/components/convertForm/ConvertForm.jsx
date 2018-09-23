@@ -43,7 +43,7 @@ ConvertForm.propTypes = {
   inputValue: PropTypes.string.isRequired,
   handleCurrencyChange: PropTypes.func.isRequired,
   handleExchangeRate: PropTypes.func.isRequired,
-  balance: PropTypes.number.isRequired,
+  balance: PropTypes.string.isRequired,
 };
 
 export default ConvertForm;
