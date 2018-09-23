@@ -22,7 +22,7 @@ export class App extends Component {
 
   componentDidMount() {
     this.initExchangeRates();
-    // this.interval = this.updateExchangeRates(this.state.from, 10000);
+    this.interval = this.updateExchangeRates(this.state.from, 10000);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
