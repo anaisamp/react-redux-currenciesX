@@ -48,7 +48,7 @@ class App extends Component {
   }
 
   handleExchangeRate = (e, fromInput, toInput) => {
-    const value = e.target.value;
+    const value = e.target.value.replace('-', '');
     const baseCurrency = e.target.name;
     const toCurrency = baseCurrency === this.state.from ? this.state.to : this.state.from;
     const exhangeValue = parseFloat(value) * this.props[baseCurrency][toCurrency];
@@ -108,7 +108,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <header className="App-header">
+        <header>
           <h1 className="App-title">Exchange</h1>
         </header>
 

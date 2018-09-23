@@ -1,12 +1,16 @@
+#root {
+  display: flex;
+  height: 100vh;
+}
+
 .App {
   text-align: center;
   font-family: 'Roboto', sans-serif;
   margin: 0 auto;
   max-width: 375px;
-}
-
-.App-header {
-  margin-top: 36px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .App-title {
@@ -18,11 +22,24 @@
 
 .App-rates {
   border-radius: 16px;
-  border: 1px solid #e8e6e6;
+  border: 2px solid whitesmoke;
   color: #0075eb;
   padding: 6px 16px;
   margin: 0px;
   font-size: 0.875rem;
+  background: white;
+  position: relative;
+}
+
+.App-rates:after {
+  position: absolute;
+  background: whitesmoke;
+  top: 15px;
+  left: -50vw;
+  right: -50vw;
+  content: "";
+  z-index: -1;
+  height: 100vh;
 }
 
 .App-convert {
@@ -38,6 +55,9 @@
   font-size: 1rem;
   cursor: pointer;
   margin: 24px 0;
+  transition: 0.3s ease-in-out;
+  opacity: 1;
+  box-shadow: 0 0 5px #eb008d;
 }
 
 .App-button:disabled {

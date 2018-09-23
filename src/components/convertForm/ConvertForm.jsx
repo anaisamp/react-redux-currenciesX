@@ -20,6 +20,8 @@ const ConvertForm = ({ selectName, selectedCurrency, inputValue, handleCurrencyC
         name={selectedCurrency}
         value={inputValue}
         onChange={handleExchangeRate}
+        placeholder="0"
+        min="0"
       />
     </div>
     <p className='balance'>Balance: {currencies.filter(c => c.symbol === selectedCurrency)[0].currency}
