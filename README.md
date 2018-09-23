@@ -22,11 +22,11 @@ A screenshot of the application is available at "visuals" folder.
 
 3. Start development server
 
-`npm run start`
+`yarn run start`
 
 4. Run tests
 
-`npm run test`
+`yarn run test`
 
 ## Features
 
