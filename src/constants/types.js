@@ -1,0 +1,2 @@
+export const UPDATE_FX_RATES = 'UPDATE_FX_RATES';
+export const UPDATE_BALANCE = 'UPDATE_BALANCE';

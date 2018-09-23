@@ -1,4 +1,4 @@
-import currencies from '../../constants';
+import { currencies } from '../../constants';
 
 const ExchangeRate = ({ to, from, rates}) => {
   const fromCurrency = currencies.find(c => c.symbol === from).currency;

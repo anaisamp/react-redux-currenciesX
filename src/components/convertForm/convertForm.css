@@ -1,0 +1,70 @@
+.convert-form {
+  margin: 24px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.convert-wrapper {
+  display: flex;
+  justify-content: center;
+  align-self: flex-start;
+}
+
+.balance {
+  font-size: 0.625rem;
+  text-align: left;
+  color: #a0a6ad;
+  align-self: flex-start;
+}
+
+input, select {
+  font-size: 2rem;
+  font-family: 'Roboto', sans-serif;
+}
+
+input[type=number] {
+  text-align: right;
+  border: 1px solid #f3f4f5;
+  border-radius: 6px;
+  max-width: 200px;
+  margin: 10px 10px;
+  padding: 6px 16px;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+select {
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent;
+  margin: 10px 10px 10px 0;
+  padding: 6px 16px 6px 0;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+.select-wrapper {
+  position: relative;
+ /* margin-right: 48px;
+  padding-right: 16px; */
+}
+
+.select-wrapper:before {
+  font-size: 1.2rem;
+  font-family: 'Roboto', sans-serif;
+  content: '﹀';
+  display: inline-block;
+  position: absolute;
+  right: 0;
+  bottom: 12px;
+  pointer-events: none;
+}
+

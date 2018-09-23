@@ -1,0 +1,1 @@
+export const baseAPIUrl = 'https://api.exchangeratesapi.io/latest?';

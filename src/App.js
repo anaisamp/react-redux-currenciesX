@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import './App.css';
 
 import { getExchangeRate } from './actions/getExchangeRate';
+import { updateBalance } from './actions/updateBalance';
+
 import ExchangeRate from './components/exchangeRate';
 import ConvertForm from './components/convertForm';
 
@@ -19,7 +21,7 @@ class App extends Component {
 
   componentDidMount() {
     this.initExchangeRates();
-    this.interval = this.updateExchangeRates(this.state.from, 10000);
+    //this.interval = this.updateExchangeRates(this.state.from, 10000);
   }
 
   componentWillUnmount() {
@@ -52,8 +54,8 @@ class App extends Component {
     const exhangeValue = parseFloat(value) * this.props[baseCurrency][toCurrency];
 
     this.setState({
-      [fromInput]: parseFloat(value),
-      [toInput]: exhangeValue === 0 ? exhangeValue : exhangeValue.toFixed(2)
+      [fromInput]: value,
+      [toInput]: exhangeValue === 0 ? exhangeValue.toString() : exhangeValue.toFixed(2).toString(),
     });
   }
 
@@ -61,9 +63,9 @@ class App extends Component {
     const fromPreviousCurrency = this.state.from;
     const toPreviousCurrency = this.state.to;
     const nextCurrency = e.target.value;
-    const oppsitySelectElement = selectElement === 'from' ? toPreviousCurrency : fromPreviousCurrency;
+    const opositySelectElement = selectElement === 'from' ? toPreviousCurrency : fromPreviousCurrency;
 
-    if (oppsitySelectElement === nextCurrency) {
+    if (opositySelectElement === nextCurrency) {
       this.setState({
         from: selectElement === 'from' ? nextCurrency : toPreviousCurrency,
         to: selectElement === 'from' ? fromPreviousCurrency : nextCurrency,
@@ -81,6 +83,26 @@ class App extends Component {
     this.updateIfNotExists(nextCurrency);
   };
 
+  handleExchangeButton = (e) => {
+    const fromValue = this.state.fromValue;
+    const fromCurrency = this.state.from;
+    const toValue = this.state.toValue;
+    const toCurrency = this.state.to;
+
+    if (this.props.balance[fromCurrency] >= fromValue) {
+      this.props.updateBalance(fromValue, fromCurrency, toValue, toCurrency);
+      
+      this.setState({
+        fromValue: '',
+        toValue: '',
+      });
+    }
+  };
+
+  isDisabled = () => {
+    return !this.state.fromValue || this.props.balance[this.state.from] < this.state.fromValue
+  }
+
   render() {
     const { from, fromValue, to, toValue } = this.state;
 
@@ -89,9 +111,7 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">Exchange</h1>
         </header>
-        <p className="App-rates">
-          <ExchangeRate from={from} to={to} rates={this.props} />
-        </p>
+
         <div className="App-convert">
           <ConvertForm
             selectName='from'
@@ -99,26 +119,41 @@ class App extends Component {
             inputValue={fromValue}
             handleCurrencyChange={(e) => this.handleCurrencyChange(e, 'from')}
             handleExchangeRate={(e) => this.handleExchangeRate(e, 'fromValue', 'toValue')}
+            balance={this.props.balance[from]}
             />
+          <span className="App-rates">
+            <ExchangeRate from={from} to={to} rates={this.props} />
+          </span>
           <ConvertForm
             selectName='to'
             selectedCurrency={to}
             inputValue={toValue}
             handleCurrencyChange={(e) => this.handleCurrencyChange(e, 'to')}
             handleExchangeRate={(e) => this.handleExchangeRate(e, 'toValue', 'fromValue')}
+            balance={this.props.balance[to]}
           />
+          <button
+            className='App-button'
+            type='button'
+            onClick={this.handleExchangeButton}
+            disabled={this.isDisabled()}
+            >
+              Exchange
+            </button>
         </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({exchangeRate}) => ({
-  ...exchangeRate
+const mapStateToProps = ({ exchangeRate, updateBalance}) => ({
+  ...exchangeRate,
+  balance: { ...updateBalance },
 });
 
 const mapDispatchToProps = dispatch => ({
-  getExchangeRate: (base) => dispatch(getExchangeRate(base))
+  getExchangeRate: (base) => dispatch(getExchangeRate(base)),
+  updateBalance: (fromValue, fromCurrency, toValue, toCurrency) => dispatch(updateBalance(fromValue, fromCurrency, toValue, toCurrency)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

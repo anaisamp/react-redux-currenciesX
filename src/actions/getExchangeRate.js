@@ -1,5 +1,5 @@
 import axios from 'axios';
-import currencies from '../constants';
+import { currencies, baseAPIUrl, UPDATE_FX_RATES } from '../constants';
 
 export const getExchangeRate = (base) => dispatch => {
   const excludeBase = currencies
@@ -9,15 +9,15 @@ export const getExchangeRate = (base) => dispatch => {
         : acc;
     }, []).join(',');
 
-  const url = `https://api.exchangeratesapi.io/latest?&base=${base}&symbols=${excludeBase}`;
+  const url = `${baseAPIUrl}&base=${base}&symbols=${excludeBase}`;
+
   return axios.get(url)
     .then(response => dispatch(updateRates(base, response.data.rates)))
   }
 
 export const updateRates = (base, payload) => dispatch =>  {
-  console.log(payload);
   dispatch({
-    type: 'UPDATE_RATES',
+    type: UPDATE_FX_RATES,
     base,
     payload,
   })
