@@ -29,13 +29,14 @@ exports[`renders App 1`] = `
         from="GBP"
         rates={
           Object {
-            "balance": Object {
-              "EUR": "150.00",
-              "GBP": "400.30",
-              "USD": "21.02",
+            "EUR": Object {
+              "GBP": 0.89,
+              "USD": 0.98,
             },
-            "getExchangeRate": [Function],
-            "updateBalance": [Function],
+            "GBP": Object {
+              "EUR": 1.12,
+              "USD": 1.17,
+            },
           }
         }
         to="EUR"

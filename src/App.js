@@ -43,7 +43,7 @@ export class App extends Component {
   }
 
   updateIfNotExists = (updatedCurrency) => {
-    if (!this.props[updatedCurrency]) {
+    if (!this.props.rates[updatedCurrency]) {
       this.props.getExchangeRate(updatedCurrency);
     }
   }
@@ -52,7 +52,7 @@ export class App extends Component {
     const value = e.target.value.replace('-', '');
     const baseCurrency = e.target.name;
     const toCurrency = baseCurrency === this.state.from ? this.state.to : this.state.from;
-    const exhangeValue = parseFloat(value) * this.props[baseCurrency][toCurrency];
+    const exhangeValue = parseFloat(value) * this.props.rates[baseCurrency][toCurrency];
 
     this.setState({
       [fromInput]: value,
@@ -130,7 +130,7 @@ export class App extends Component {
             balance={this.props.balance[from]}
           />
           <span className="App-rates">
-            <ExchangeRate from={from} to={to} rates={this.props} />
+            <ExchangeRate from={from} to={to} rates={this.props.rates} />
           </span>
           <ConvertForm
             selectName="to"
@@ -155,7 +155,7 @@ export class App extends Component {
 }
 
 const mapStateToProps = ({ exchangeRate, balanceUpdate }) => ({
-  ...exchangeRate,
+  rates: { ...exchangeRate },
   balance: { ...balanceUpdate },
 });
 
@@ -168,6 +168,7 @@ App.propTypes = {
   getExchangeRate: PropTypes.func.isRequired,
   updateBalance: PropTypes.func.isRequired,
   balance: PropTypes.object.isRequired,
+  rates: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
