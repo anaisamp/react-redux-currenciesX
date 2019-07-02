@@ -25,10 +25,6 @@ export class App extends Component {
     this.interval = this.updateExchangeRates(this.state.from, 10000);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return this.props !== nextProps || this.state !== nextState;
-  }
-
   componentWillUnmount() {
     clearInterval(this.interval);
   }
