@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://anaisamp.github.io/react-redux-currenciesX/",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.27.2",
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.5.0",
     "enzyme-to-json": "^3.3.4",
